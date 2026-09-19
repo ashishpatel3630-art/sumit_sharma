@@ -1,18 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  Play,
-} from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, CalendarDays, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+
+const headlines = [
+  "महाकाल की भक्ति से जीवन में नई ऊर्जा पाएं।",
+  "सही पूजा, सही संकल्प और सही मार्गदर्शन।",
+  "वैदिक ज्योतिष से अपने जीवन को समझें।",
+  "श्रद्धा से जुड़ें, शांति की ओर बढ़ें।",
+];
+
+const descriptions = [
+  "उज्जैन की पावन भूमि से पारंपरिक पूजा अनुष्ठान और आध्यात्मिक मार्गदर्शन के साथ अपने जीवन के महत्वपूर्ण चरणों के लिए सही दिशा खोजें।",
+  "विधि-विधान और श्रद्धा के साथ संपन्न पूजा अनुष्ठानों के माध्यम से अपनी मनोकामना, संकल्प और आध्यात्मिक साधना को एक नई दिशा दें।",
+  "जन्म कुंडली, ग्रहों और जीवन की परिस्थितियों को समझकर वैदिक ज्योतिष के माध्यम से व्यक्तिगत मार्गदर्शन प्राप्त करें।",
+  "महाकाल की नगरी उज्जैन से पूजा, अनुष्ठान और ज्योतिषीय परामर्श — आपकी आस्था और आवश्यकताओं के अनुरूप।",
+];
+
+const ROTATION_DURATION = 4000;
 
 export default function Hero() {
+  const [activeHeadline, setActiveHeadline] = useState(0);
+  const [progressKey, setProgressKey] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveHeadline((current) => (current + 1) % headlines.length);
+      setProgressKey((current) => current + 1);
+    }, ROTATION_DURATION);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const changeHeadline = (index: number) => {
+    setActiveHeadline(index);
+    setProgressKey((current) => current + 1);
+  };
+
   return (
-    <section className="relative flex min-h-[100svh] items-end overflow-hidden bg-[#18120F] text-white">
-      {/* Video */}
+    <section className="relative min-h-[100svh] overflow-hidden bg-[#18120F] text-white">
+    
       <video
         autoPlay
         muted
@@ -26,152 +55,255 @@ export default function Hero() {
         <source src="/videos/mahakal-hero.mp4" type="video/mp4" />
       </video>
 
-      {/* Cinematic treatment */}
-      <div className="absolute inset-0 bg-black/45" />
+   
+      <div className="absolute inset-0 bg-black/35" />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#18120F] via-[#18120F]/45 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/15" />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-[#18120F]/85 via-[#18120F]/25 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
 
-      {/* Grain */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.045] [background-image:url('/noise.svg')]" />
 
-      {/* Fine frame */}
-      <div className="pointer-events-none absolute inset-5 rounded-[1.5rem] border border-white/[0.08] sm:inset-7 lg:inset-9" />
+      <div className="pointer-events-none absolute left-[8%] top-[35%] h-72 w-72 rounded-full bg-[#C69A42]/10 blur-[120px]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-6 pb-10 pt-36 sm:pb-14 md:px-10 lg:px-16 lg:pb-16">
-        <div className="max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.8,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mb-7 flex items-center gap-3"
-          >
-            <span className="h-px w-10 bg-[#C69A42]" />
-
-            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-[#E8C46C] sm:text-xs">
-              Vedic Astrology · Puja Anushthan · Dosh Nivaran
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 35 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1,
-              delay: 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="max-w-6xl font-serif text-[clamp(4rem,10vw,9.5rem)] leading-[0.82] tracking-[-0.055em]"
-          >
-            Align your
-            <br />
-            <span className="text-[#E8C46C]">destiny.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.25,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mt-8 max-w-xl text-sm leading-7 text-white/65 sm:text-base md:text-lg"
-          >
-            वैदिक ज्योतिष, पारंपरिक पूजा अनुष्ठान और दोष संबंधी
-            मार्गदर्शन — आपकी आवश्यकता और परिस्थिति को समझकर।
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.38,
-            }}
-            className="mt-9 flex flex-col gap-3 sm:flex-row"
-          >
-            <Link
-              href="/book-puja"
-              className="group inline-flex items-center justify-center gap-3 rounded-full bg-[#FFF9EF] px-7 py-4 text-sm font-semibold text-[#18120F] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#E8C46C]"
+      {/* Hero Content */}
+      <div className="relative z-10 flex min-h-[100svh] items-end">
+        <div className="mx-auto w-full max-w-[1440px] px-6 pb-10 sm:px-8 sm:pb-14 lg:px-12 lg:pb-20">
+          <div className="max-w-5xl">
+            {/* Eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="mb-7 flex items-center gap-3"
             >
-              Book a Puja
+              <span className="h-px w-10 bg-[#E8C46C]" />
 
-              <ArrowRight
-                size={17}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </Link>
+              <span className="text-[10px] font-medium tracking-[0.18em] text-[#E8C46C] sm:text-xs">
+                वैदिक ज्योतिष · पूजा अनुष्ठान · दोष निवारण
+              </span>
+            </motion.div>
 
-            <Link
-              href="/astrology"
-              className="group inline-flex items-center justify-center gap-3 rounded-full border border-white/20 bg-black/10 px-7 py-4 text-sm font-medium text-white backdrop-blur-md transition-all duration-300 hover:border-[#E8C46C]/50 hover:bg-white/10"
+            {/* Animated Heading */}
+            <div className="relative min-h-[clamp(12rem,20vw,18rem)]">
+              <AnimatePresence mode="wait">
+                <motion.h1
+                  key={activeHeadline}
+                  initial={{
+                    opacity: 0,
+                    y: 35,
+                    filter: "blur(5px)",
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    filter: "blur(0px)",
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: -25,
+                    filter: "blur(4px)",
+                  }}
+                  transition={{
+                    duration: 0.7,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="max-w-5xl font-serif text-[clamp(3rem,7vw,7.2rem)] font-medium leading-[0.96] tracking-[-0.045em]"
+                >
+                  {headlines[activeHeadline]}
+                </motion.h1>
+              </AnimatePresence>
+            </div>
+
+            {/* Description */}
+            <div className="relative mt-1 min-h-[6.5rem] max-w-2xl sm:min-h-[5.5rem]">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={`description-${activeHeadline}`}
+                  initial={{
+                    opacity: 0,
+                    y: 12,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: -8,
+                  }}
+                  transition={{
+                    duration: 0.45,
+                    ease: "easeOut",
+                  }}
+                  className="text-sm leading-7 text-white/70 sm:text-base sm:leading-8"
+                >
+                  {descriptions[activeHeadline]}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            {/* Actions */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                delay: 0.35,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center"
             >
-              Explore Astrology
+              {/* Primary CTA */}
+              <Link
+                href="/book-puja"
+                className="group relative inline-flex h-14 items-center justify-between overflow-hidden rounded-full bg-[rgb(202,156,3)] pl-7 pr-2 text-sm font-semibold text-white shadow-[0_12px_35px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#d8a31d] hover:shadow-[0_16px_45px_rgba(0,0,0,0.38)]"
+              >
+                <span className="relative z-10">पूजा बुक करें</span>
 
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </Link>
-          </motion.div>
+                <span className="ml-7 flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF9EF] text-[#18120F] transition-all duration-300 group-hover:translate-x-0.5 group-hover:rotate-[-5deg]">
+                  <ArrowRight
+                    size={16}
+                    strokeWidth={2}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  />
+                </span>
+              </Link>
+
+              {/* Secondary CTA */}
+              <Link
+                href="/astrology"
+                className="group inline-flex h-14 items-center justify-center gap-3 rounded-full border border-white/25 bg-black/20 px-7 text-sm font-medium text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#E8C46C]/70 hover:bg-black/30"
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-[#E8C46C]/60 text-[#E8C46C]">
+                  <Sparkles size={13} />
+                </span>
+
+                <span>ज्योतिष परामर्श</span>
+
+                <ArrowUpRight
+                  size={16}
+                  className="text-[#E8C46C] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              </Link>
+            </motion.div>
+
+            {/* Trust / Service Info */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 1,
+                delay: 0.7,
+              }}
+              className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-[11px] text-white/45 sm:text-xs"
+            >
+              <div className="flex items-center gap-2">
+                <CalendarDays size={14} className="text-[#E8C46C]/80" />
+
+                <span>शुभ मुहूर्त के अनुसार</span>
+              </div>
+
+              <span className="hidden h-3 w-px bg-white/15 sm:block" />
+
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#E8C46C]" />
+
+                <span>उज्जैन से वैदिक सेवाएं</span>
+              </div>
+            </motion.div>
+
+            {/* Headline Progress */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                delay: 0.9,
+                duration: 0.8,
+              }}
+              className="mt-7 flex items-center gap-2"
+            >
+              {headlines.map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  aria-label={`शीर्षक ${index + 1}`}
+                  onClick={() => changeHeadline(index)}
+                  className="group relative py-2"
+                >
+                  <span
+                    className={`block h-[2px] rounded-full transition-all duration-500 ${
+                      activeHeadline === index
+                        ? "w-11 bg-[#E8C46C]"
+                        : "w-3 bg-white/25 group-hover:bg-white/50"
+                    }`}
+                  />
+
+                  {/* Auto Progress */}
+                  {activeHeadline === index && (
+                    <motion.span
+                      key={progressKey}
+                      initial={{ width: 0 }}
+                      animate={{ width: "100%" }}
+                      transition={{
+                        duration: ROTATION_DURATION / 1000,
+                        ease: "linear",
+                      }}
+                      className="absolute bottom-2 left-0 h-[2px] rounded-full bg-[#FFF9EF]"
+                    />
+                  )}
+                </button>
+              ))}
+            </motion.div>
+          </div>
         </div>
-
-        {/* Bottom metadata */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="mt-20 flex flex-col gap-5 border-t border-white/15 pt-5 md:flex-row md:items-end md:justify-between"
-        >
-          <div>
-            <p className="text-[9px] uppercase tracking-[0.32em] text-white/40">
-              SUMIT SHARMA
-            </p>
-
-            <p className="mt-2 text-xs text-white/55 sm:text-sm">
-              Vedic Astrology · Puja Anushthan
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Play
-              size={12}
-              className="fill-[#E8C46C] text-[#E8C46C]"
-            />
-
-            <span className="text-[9px] uppercase tracking-[0.25em] text-white/35">
-              Sacred traditions · Modern guidance
-            </span>
-          </div>
-        </motion.div>
       </div>
 
-      {/* Scroll */}
+      {/* Location */}
+      <motion.div
+        initial={{ opacity: 0, x: 10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{
+          duration: 0.8,
+          delay: 1,
+        }}
+        className="absolute bottom-8 right-8 z-10 hidden md:block lg:right-12"
+      >
+        <div className="flex items-center gap-3">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#E8C46C] shadow-[0_0_12px_rgba(232,196,108,0.7)]" />
+
+          <span className="text-[9px] font-medium tracking-[0.25em] text-white/40">
+            उज्जैन · मध्य प्रदेश
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 right-8 hidden items-center gap-3 md:flex"
+        transition={{
+          delay: 1.3,
+          duration: 0.8,
+        }}
+        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 md:block"
       >
-        <span className="text-[9px] uppercase tracking-[0.3em] text-white/35">
-          Scroll to explore
-        </span>
-
         <motion.div
-          animate={{ y: [0, 6, 0] }}
+          animate={{ y: [0, 5, 0] }}
           transition={{
-            duration: 1.7,
+            duration: 1.8,
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20"
+          className="flex flex-col items-center gap-2"
         >
-          <ArrowDown size={14} />
+          <span className="text-[8px] font-medium tracking-[0.3em] text-white/30">
+            नीचे देखें
+          </span>
+
+          <span className="h-8 w-px bg-gradient-to-b from-white/40 to-transparent" />
         </motion.div>
       </motion.div>
     </section>

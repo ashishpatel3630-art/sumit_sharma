@@ -1,47 +1,76 @@
 "use client";
 
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
   CalendarDays,
   Menu,
-  MessageCircle,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { siteConfig } from "@/data/siteConfig";
-import { createWhatsAppUrl } from "@/lib/whatsapp";
 
-const links = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Astrology", href: "/astrology" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Contact", href: "/contact" },
-];
+type Language = "hi" | "en";
+
+const navigation = {
+  hi: [
+    { label: "होम", href: "/" },
+    { label: "कालसर्प पूजा", href: "/kaal-sarp-dosh-puja" },
+    { label: "मंगल दोष पूजा", href: "/mangal-dosh-puja" },
+    { label: "पूजा सेवाएं", href: "/#pujas" },
+    { label: "ऑनलाइन पूजा", href: "/online-puja" },
+    { label: "संपर्क करें", href: "/#contact" },
+  ],
+  en: [
+    { label: "Home", href: "/" },
+    { label: "Kaal Sarp Puja", href: "/kaal-sarp-dosh-puja" },
+    { label: "Mangal Dosh Puja", href: "/mangal-dosh-puja" },
+    { label: "Puja Services", href: "/#pujas" },
+    { label: "Online Puja", href: "/online-puja" },
+    { label: "Contact", href: "/#contact" },
+  ],
+};
+
+const content = {
+  hi: {
+    name: "पंडित सौरभ जीवैदिक ज्योतिषी",
+    shortName: "पंडित सौरभ",
+    book: "पूजा बुक करें",
+    menu: "मेन्यू",
+    close: "बंद करें",
+  },
+  en: {
+    name: "Pandit Saurabh Jeevaidik Jyotishi",
+    shortName: "Pandit Saurabh",
+    book: "Book Puja",
+    menu: "Menu",
+    close: "Close",
+  },
+};
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+
+  const [language, setLanguage] = useState<Language>("hi");
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const whatsappUrl = createWhatsAppUrl(
-    "Namaste Sumit Sharma Ji, mujhe puja/astrology consultation ke baare mein jaankari chahiye."
-  );
+  const t = content[language];
+  const links = navigation[language];
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 24);
+      setScrolled(window.scrollY > 20);
     };
 
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -49,21 +78,21 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [mobileOpen]);
 
   useEffect(() => {
-    setOpen(false);
+    setMobileOpen(false);
   }, [pathname]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        setMobileOpen(false);
       }
     };
 
@@ -75,85 +104,117 @@ export default function Navbar() {
   }, []);
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
+    if (href === "/") {
+      return pathname === "/";
+    }
 
-    return pathname === href || pathname.startsWith(`${href}/`);
+    if (href.startsWith("/#")) {
+      return pathname === "/";
+    }
+
+    return (
+      pathname === href ||
+      pathname.startsWith(`${href}/`)
+    );
   };
+
+  const bookHref = "/book-puja";
 
   return (
     <>
-      {/* ─────────────────────────────────────────
-          DESKTOP / MOBILE HEADER
-      ───────────────────────────────────────── */}
-      <header className="fixed inset-x-0 top-0 z-50">
-        <div
-          className={`mx-auto px-3 pt-3 transition-all duration-500 sm:px-5 lg:px-7 ${
-            scrolled ? "pt-2" : "pt-4"
-          }`}
-        >
+      <header
+        className={`
+          fixed inset-x-0 top-0 z-50
+          transition-all duration-300
+          ${scrolled ? "pt-2" : "pt-4"}
+        `}
+      >
+        <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
           <nav
             className={`
-              relative mx-auto flex h-[68px] max-w-[1500px]
-              items-center justify-between
-              rounded-[1.25rem]
-              border px-4 text-white
-              backdrop-blur-2xl
-              transition-all duration-500
-              sm:px-5
+              relative flex h-[70px] items-center
+              justify-between
+              rounded-2xl
+              border
+              px-4 sm:px-5 lg:px-6
+              transition-all duration-300
               ${
                 scrolled
-                  ? "border-white/[0.14] bg-[#18120F]/90 shadow-[0_14px_50px_rgba(0,0,0,0.24)]"
-                  : "border-white/10 bg-[#18120F]/65 shadow-2xl"
+                  ? "border-[#E7DED1] bg-[#FFFDF9]/95 shadow-[0_8px_30px_rgba(44,31,20,0.08)] backdrop-blur-xl"
+                  : "border-[#E8DFD2]/80 bg-[#FFFDF9]/90 backdrop-blur-xl"
               }
             `}
           >
-            {/* Subtle gold top highlight */}
-            <div
-              aria-hidden="true"
-              className="
-                pointer-events-none absolute inset-x-8 top-0
-                h-px bg-gradient-to-r
-                from-transparent via-[#C69A42]/40 to-transparent
-              "
-            />
-
-            {/* ───────────────── BRAND ───────────────── */}
+            {/* LEFT — BRAND */}
             <Link
               href="/"
-              aria-label="Sumit Sharma — Home"
-              className="group relative flex items-center gap-3"
+              aria-label={`${t.name} — Home`}
+              className="group flex min-w-0 items-center gap-3"
             >
-              <motion.span
-                whileHover={{ rotate: 8 }}
-                transition={{ duration: 0.3 }}
+              {/* Om */}
+              <span
                 className="
-                  flex h-10 w-10 items-center justify-center
+                  flex h-10 w-10 shrink-0
+                  items-center justify-center
                   rounded-full
-                  border border-[#C69A42]/35
-                  bg-[#C69A42]/[0.04]
-                  font-serif text-[19px]
-                  text-[#C69A42]
-                  transition-colors duration-300
-                  group-hover:border-[#C69A42]/70
-                  group-hover:bg-[#C69A42]/10
+                  border border-[#B8893D]/30
+                  bg-[#B8893D]/[0.05]
+                  font-serif text-[20px]
+                  text-[#9A6C28]
+                  transition-all duration-300
+                  group-hover:border-[#B8893D]/60
+                  group-hover:bg-[#B8893D]/10
                 "
               >
                 ॐ
-              </motion.span>
+              </span>
 
-              <span className="leading-none">
-                <span className="block text-[10px] font-medium tracking-[0.34em] text-white/90">
-                  SUMIT
+              {/* Name */}
+              <span className="hidden min-w-0 sm:block">
+                <span
+                  className="
+                    block truncate
+                    font-serif
+                    text-[14px]
+                    font-semibold
+                    tracking-[-0.01em]
+                    text-[#2E241D]
+                    lg:text-[15px]
+                  "
+                >
+                  {t.name}
                 </span>
 
-                <span className="mt-1 block text-[10px] font-medium tracking-[0.34em] text-[#C69A42]">
-                  SHARMA
+                <span
+                  className="
+                    mt-0.5 block
+                    text-[8px]
+                    font-medium
+                    uppercase
+                    tracking-[0.25em]
+                    text-[#A78355]
+                  "
+                >
+                  Vedic Astrology
                 </span>
+              </span>
+
+              {/* Mobile brand */}
+              <span
+                className="
+                  block sm:hidden
+                  font-serif
+                  text-[15px]
+                  font-semibold
+                  text-[#2E241D]
+                "
+              >
+                {t.shortName}
               </span>
             </Link>
 
-            {/* ───────────────── DESKTOP NAV ───────────────── */}
-            <div className="hidden items-center gap-1 lg:flex">
+            {/* CENTER — DESKTOP NAV */}
+            <div className="hidden items-center lg:flex">
               {links.map((link) => {
                 const active = isActive(link.href);
 
@@ -162,33 +223,39 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     className="
-                      group relative rounded-full
-                      px-3.5 py-2.5
-                      text-[13px]
-                      transition-colors duration-300
+                      group relative
+                      px-3 py-2.5
+                      text-[12.5px]
+                      font-medium
+                      text-[#5D5148]
+                      transition-colors duration-200
+                      hover:text-[#9A6C28]
                     "
                   >
                     <span
                       className={
                         active
-                          ? "text-white"
-                          : "text-white/55 group-hover:text-white"
+                          ? "text-[#9A6C28]"
+                          : undefined
                       }
                     >
                       {link.label}
                     </span>
 
-                    {/* Active indicator */}
+                    {/* Active underline */}
                     <span
                       className={`
-                        absolute bottom-1.5 left-1/2 h-px
+                        absolute
+                        bottom-0.5
+                        left-1/2
+                        h-px
                         -translate-x-1/2
-                        bg-[#C69A42]
+                        bg-[#B8893D]
                         transition-all duration-300
                         ${
                           active
-                            ? "w-4 opacity-100"
-                            : "w-0 opacity-0 group-hover:w-3 group-hover:opacity-70"
+                            ? "w-5 opacity-100"
+                            : "w-0 opacity-0 group-hover:w-4 group-hover:opacity-60"
                         }
                       `}
                     />
@@ -197,51 +264,87 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* ───────────────── DESKTOP CTA ───────────────── */}
-            <div className="hidden items-center gap-2 lg:flex">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp consultation"
+            {/* RIGHT — LANGUAGE + CTA */}
+            <div className="hidden items-center gap-3 lg:flex">
+              {/* Language Switcher */}
+              <div
                 className="
-                  group flex h-11 w-11
-                  items-center justify-center
+                  flex items-center
                   rounded-full
-                  border border-white/10
-                  text-white/55
-                  transition-all duration-300
-                  hover:border-[#C69A42]/30
-                  hover:bg-white/[0.04]
-                  hover:text-[#C69A42]
+                  border border-[#E7DED1]
+                  bg-white/70
+                  p-1
                 "
               >
-                <MessageCircle
-                  size={17}
-                  strokeWidth={1.7}
-                  className="transition-transform duration-300 group-hover:scale-105"
-                />
-              </a>
+                <button
+                  type="button"
+                  onClick={() => setLanguage("hi")}
+                  className={`
+                    rounded-full
+                    px-2.5 py-1.5
+                    text-[10px]
+                    font-semibold
+                    transition-all duration-200
+                    ${
+                      language === "hi"
+                        ? "bg-[#2E241D] text-white"
+                        : "text-[#74665A] hover:text-[#2E241D]"
+                    }
+                  `}
+                >
+                  हिंदी
+                </button>
 
+                <button
+                  type="button"
+                  onClick={() => setLanguage("en")}
+                  className={`
+                    rounded-full
+                    px-2.5 py-1.5
+                    text-[10px]
+                    font-semibold
+                    transition-all duration-200
+                    ${
+                      language === "en"
+                        ? "bg-[#2E241D] text-white"
+                        : "text-[#74665A] hover:text-[#2E241D]"
+                    }
+                  `}
+                >
+                  EN
+                </button>
+              </div>
+
+              {/* CTA */}
               <Link
-                href="/book-puja"
+                href={bookHref}
                 className="
-                  group inline-flex items-center gap-2
+                  group
+                  inline-flex
+                  h-11
+                  items-center
+                  gap-2
                   rounded-full
-                  bg-[#C69A42]
-                  px-5 py-3
-                  text-[13px] font-semibold
-                  text-[#18120F]
-                  shadow-[0_8px_25px_rgba(198,154,66,0.12)]
+                  bg-[#9A6C28]
+                  px-5
+                  text-[12px]
+                  font-semibold
+                  text-white
+                  shadow-[0_7px_20px_rgba(154,108,40,0.16)]
                   transition-all duration-300
-                  hover:bg-[#D8B365]
-                  hover:shadow-[0_10px_32px_rgba(198,154,66,0.2)]
+                  hover:bg-[#83591E]
+                  hover:shadow-[0_10px_26px_rgba(154,108,40,0.22)]
                 "
               >
-                Book Consultation
+                <CalendarDays
+                  size={15}
+                  strokeWidth={1.8}
+                />
+
+                {t.book}
 
                 <ArrowUpRight
-                  size={15}
+                  size={14}
                   strokeWidth={1.8}
                   className="
                     transition-transform duration-300
@@ -252,90 +355,63 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* ───────────────── MOBILE MENU BUTTON ───────────────── */}
+            {/* MOBILE MENU BUTTON */}
             <motion.button
               whileTap={{ scale: 0.94 }}
-              onClick={() => setOpen(true)}
               type="button"
-              aria-label="Open navigation menu"
-              aria-expanded={open}
+              onClick={() => setMobileOpen(true)}
+              aria-label={t.menu}
+              aria-expanded={mobileOpen}
               className="
-                flex h-11 w-11
+                flex h-10 w-10
                 items-center justify-center
                 rounded-full
-                border border-white/10
-                bg-white/[0.025]
-                text-white
-                transition-all duration-300
-                hover:border-[#C69A42]/30
-                hover:text-[#C69A42]
+                border border-[#E7DED1]
+                bg-white/70
+                text-[#2E241D]
+                transition-all duration-200
+                hover:border-[#B8893D]/40
+                hover:text-[#9A6C28]
                 lg:hidden
               "
             >
-              <Menu size={20} strokeWidth={1.6} />
+              <Menu
+                size={19}
+                strokeWidth={1.7}
+              />
             </motion.button>
           </nav>
         </div>
       </header>
 
-      {/* ─────────────────────────────────────────
-          MOBILE FULLSCREEN MENU
-      ───────────────────────────────────────── */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
-        {open && (
+        {mobileOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.28 }}
+            transition={{ duration: 0.2 }}
             className="
               fixed inset-0 z-[100]
               overflow-y-auto
-              bg-[#18120F]
-              text-white
+              bg-[#FFFDF9]
+              text-[#2E241D]
               lg:hidden
             "
           >
-            {/* Background geometry */}
+            {/* MOBILE HEADER */}
             <div
-              aria-hidden="true"
               className="
-                pointer-events-none absolute
-                -right-32 top-24
-                h-[420px] w-[420px]
-                rounded-full
-                border border-[#C69A42]/10
+                flex h-[74px]
+                items-center justify-between
+                border-b border-[#E9E0D5]
+                px-5
               "
-            />
-
-            <div
-              aria-hidden="true"
-              className="
-                pointer-events-none absolute
-                -right-16 top-40
-                h-[260px] w-[260px]
-                rounded-full
-                border border-[#C69A42]/[0.07]
-              "
-            />
-
-            <div
-              aria-hidden="true"
-              className="
-                pointer-events-none absolute
-                bottom-0 left-0
-                h-[360px] w-[360px]
-                rounded-full
-                bg-[#7A1717]/10
-                blur-3xl
-              "
-            />
-
-            {/* Header */}
-            <div className="relative flex items-center justify-between px-5 py-5 sm:px-8">
+            >
               <Link
                 href="/"
-                onClick={() => setOpen(false)}
+                onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3"
               >
                 <span
@@ -343,180 +419,293 @@ export default function Navbar() {
                     flex h-10 w-10
                     items-center justify-center
                     rounded-full
-                    border border-[#C69A42]/40
-                    font-serif text-lg
-                    text-[#C69A42]
+                    border border-[#B8893D]/30
+                    font-serif text-xl
+                    text-[#9A6C28]
                   "
                 >
                   ॐ
                 </span>
 
-                <span className="text-[10px] font-medium tracking-[0.3em]">
-                  SUMIT SHARMA
+                <span
+                  className="
+                    font-serif
+                    text-[15px]
+                    font-semibold
+                  "
+                >
+                  {t.name}
                 </span>
               </Link>
 
               <motion.button
                 whileTap={{ scale: 0.94 }}
-                onClick={() => setOpen(false)}
                 type="button"
-                aria-label="Close navigation menu"
+                onClick={() => setMobileOpen(false)}
+                aria-label={t.close}
                 className="
-                  flex h-11 w-11
+                  flex h-10 w-10
                   items-center justify-center
                   rounded-full
-                  border border-white/10
-                  text-white/75
-                  transition-colors
-                  hover:border-[#C69A42]/30
-                  hover:text-[#C69A42]
+                  border border-[#E7DED1]
+                  text-[#5D5148]
                 "
               >
-                <X size={20} strokeWidth={1.6} />
+                <X
+                  size={19}
+                  strokeWidth={1.7}
+                />
               </motion.button>
             </div>
 
-            {/* Menu content */}
-            <div
-              className="
-                relative mx-auto
-                flex min-h-[calc(100svh-84px)]
-                max-w-2xl
-                flex-col
-                justify-center
-                px-6 pb-12
-                sm:px-10
-              "
-            >
-              <div className="mb-7">
-                <p className="text-[10px] tracking-[0.32em] text-[#C69A42]">
-                  NAVIGATION
+            {/* MOBILE CONTENT */}
+            <div className="mx-auto max-w-xl px-6 pb-10 pt-8">
+              {/* Intro */}
+              <div className="mb-8">
+                <p
+                  className="
+                    text-[10px]
+                    font-semibold
+                    uppercase
+                    tracking-[0.25em]
+                    text-[#A78355]
+                  "
+                >
+                  Vedic Astrology
                 </p>
 
-                <p className="mt-3 max-w-xs font-serif text-lg leading-7 text-white/45">
-                  वैदिक ज्योतिष, पूजा अनुष्ठान और व्यक्तिगत मार्गदर्शन।
-                </p>
+                <h2
+                  className="
+                    mt-3
+                    max-w-md
+                    font-serif
+                    text-2xl
+                    leading-tight
+                    text-[#2E241D]
+                  "
+                >
+                  {language === "hi"
+                    ? "पूजा, ज्योतिष और आध्यात्मिक मार्गदर्शन"
+                    : "Puja, astrology & spiritual guidance"}
+                </h2>
+              </div>
+
+              {/* Mobile language */}
+              <div className="mb-7 flex items-center gap-2">
+                <span className="text-xs text-[#8B7C6D]">
+                  Language
+                </span>
+
+                <div
+                  className="
+                    flex rounded-full
+                    border border-[#E7DED1]
+                    bg-white
+                    p-1
+                  "
+                >
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("hi")}
+                    className={`
+                      rounded-full
+                      px-3 py-1.5
+                      text-[10px]
+                      font-semibold
+                      ${
+                        language === "hi"
+                          ? "bg-[#2E241D] text-white"
+                          : "text-[#74665A]"
+                      }
+                    `}
+                  >
+                    हिंदी
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setLanguage("en")}
+                    className={`
+                      rounded-full
+                      px-3 py-1.5
+                      text-[10px]
+                      font-semibold
+                      ${
+                        language === "en"
+                          ? "bg-[#2E241D] text-white"
+                          : "text-[#74665A]"
+                      }
+                    `}
+                  >
+                    EN
+                  </button>
+                </div>
               </div>
 
               {/* Links */}
-              <div>
+              <div className="border-t border-[#E9E0D5]">
                 {links.map((link, index) => {
                   const active = isActive(link.href);
 
                   return (
                     <motion.div
                       key={link.href}
-                      initial={{ opacity: 0, x: -18 }}
-                      animate={{ opacity: 1, x: 0 }}
+                      initial={{
+                        opacity: 0,
+                        y: 8,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                      }}
                       transition={{
-                        delay: 0.06 + index * 0.045,
-                        duration: 0.35,
-                        ease: [0.22, 1, 0.36, 1],
+                        delay: index * 0.04,
+                        duration: 0.25,
                       }}
                     >
                       <Link
                         href={link.href}
-                        onClick={() => setOpen(false)}
+                        onClick={() =>
+                          setMobileOpen(false)
+                        }
                         className="
-                          group flex items-center justify-between
-                          border-b border-white/[0.08]
-                          py-4
+                          group
+                          flex
+                          items-center
+                          justify-between
+                          border-b
+                          border-[#E9E0D5]
+                          py-5
                         "
                       >
                         <span
                           className={`
-                            font-serif text-[2.1rem]
-                            leading-none
-                            transition-colors duration-300
+                            font-serif
+                            text-xl
+                            transition-colors
                             ${
                               active
-                                ? "text-[#C69A42]"
-                                : "text-white/90 group-hover:text-[#C69A42]"
+                                ? "text-[#9A6C28]"
+                                : "text-[#2E241D] group-hover:text-[#9A6C28]"
                             }
                           `}
                         >
                           {link.label}
                         </span>
 
-                        <span
-                          className={`
-                            font-mono text-[9px]
-                            tracking-[0.2em]
-                            transition-colors duration-300
-                            ${
-                              active
-                                ? "text-[#C69A42]"
-                                : "text-white/20 group-hover:text-white/50"
-                            }
-                          `}
-                        >
-                          0{index + 1}
-                        </span>
+                        <ArrowUpRight
+                          size={17}
+                          strokeWidth={1.5}
+                          className="
+                            text-[#B7AA9B]
+                            transition-all duration-200
+                            group-hover:-translate-y-0.5
+                            group-hover:translate-x-0.5
+                            group-hover:text-[#9A6C28]
+                          "
+                        />
                       </Link>
                     </motion.div>
                   );
                 })}
               </div>
 
-              {/* Mobile actions */}
+              {/* Mobile CTA */}
               <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.35 }}
-                className="mt-8 grid grid-cols-2 gap-3"
+                initial={{
+                  opacity: 0,
+                  y: 10,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay: 0.28,
+                  duration: 0.3,
+                }}
+                className="mt-8"
               >
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                  className="
-                    flex items-center justify-center gap-2
-                    rounded-full
-                    border border-white/10
-                    px-5 py-3.5
-                    text-sm
-                    text-white/75
-                    transition-all
-                    hover:border-[#C69A42]/35
-                    hover:text-white
-                  "
-                >
-                  <MessageCircle size={16} strokeWidth={1.7} />
-                  WhatsApp
-                </a>
-
                 <Link
-                  href="/book-puja"
-                  onClick={() => setOpen(false)}
+                  href={bookHref}
+                  onClick={() => setMobileOpen(false)}
                   className="
-                    flex items-center justify-center gap-2
+                    flex
+                    h-13
+                    w-full
+                    items-center
+                    justify-center
+                    gap-2
                     rounded-full
-                    bg-[#C69A42]
-                    px-5 py-3.5
-                    text-sm font-semibold
-                    text-[#18120F]
-                    transition-colors
-                    hover:bg-[#D8B365]
+                    bg-[#9A6C28]
+                    px-6
+                    py-4
+                    text-sm
+                    font-semibold
+                    text-white
+                    shadow-[0_8px_25px_rgba(154,108,40,0.16)]
                   "
                 >
-                  <CalendarDays size={16} strokeWidth={1.7} />
-                  Book Consultation
+                  <CalendarDays
+                    size={16}
+                    strokeWidth={1.8}
+                  />
+
+                  {t.book}
+
+                  <ArrowUpRight
+                    size={15}
+                    strokeWidth={1.8}
+                  />
                 </Link>
               </motion.div>
 
-              {/* Bottom identity */}
-              <div className="mt-10 flex items-center justify-between border-t border-white/[0.08] pt-5">
+              {/* Footer identity */}
+              <div
+                className="
+                  mt-10
+                  flex
+                  items-center
+                  justify-between
+                  border-t
+                  border-[#E9E0D5]
+                  pt-5
+                "
+              >
                 <div>
-                  <p className="text-[9px] tracking-[0.28em] text-white/25">
-                    VEDIC ASTROLOGY
+                  <p
+                    className="
+                      text-[9px]
+                      font-medium
+                      uppercase
+                      tracking-[0.22em]
+                      text-[#A99A8A]
+                    "
+                  >
+                    Vedic Astrology
                   </p>
-                  <p className="mt-1 text-[9px] tracking-[0.28em] text-white/25">
-                    PUJA ANUSHTHAN
+
+                  <p
+                    className="
+                      mt-1
+                      text-[9px]
+                      font-medium
+                      uppercase
+                      tracking-[0.22em]
+                      text-[#A99A8A]
+                    "
+                  >
+                    Puja Anushthan
                   </p>
                 </div>
 
-                <span className="font-serif text-3xl text-[#C69A42]/25">
+                <span
+                  className="
+                    font-serif
+                    text-3xl
+                    text-[#B8893D]/30
+                  "
+                >
                   ॐ
                 </span>
               </div>

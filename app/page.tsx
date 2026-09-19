@@ -11,7 +11,8 @@ import MuhuratSection from "@/components/home/MuhuratSection";
 import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
 import ContactSection from "@/components/home/ContactSection";
-
+import GalleryLightbox from "@/components/ui/GalleryLightbox";
+import GallerySection from "@/components/home/GallerySection";
 export default function HomePage() {
   return (
     <main className="min-h-screen overflow-hidden bg-[#FFF9EF] text-[#18120F]">
@@ -56,7 +57,7 @@ export default function HomePage() {
           Educational interaction before conversion
       ========================================================= */}
       <DoshAnalyzer />
-
+        <GallerySection/>
       {/* =========================================================
           08 — PUJA PROCESS
           Makes the service journey understandable
