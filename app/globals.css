@@ -1,26 +1,972 @@
 @import "tailwindcss";
 
+/* =========================================================
+   SUMIT SHARMA — GLOBAL DESIGN SYSTEM
+   Traditional Indian Spirituality × Luxury Editorial
+   ========================================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette */
+  --maroon: #7a1717;
+  --maroon-dark: #541010;
+  --maroon-deep: #3b0b0b;
+
+  --temple-red: #a52a16;
+  --saffron: #d85b16;
+  --burnt-orange: #b94716;
+
+  --ivory: #fff9ef;
+  --ivory-soft: #fcf4e8;
+  --cream: #f3e4c7;
+  --cream-dark: #e4d0aa;
+
+  --gold: #c69a42;
+  --gold-light: #dfbd72;
+  --gold-dark: #9c7428;
+
+  --charcoal: #18120f;
+  --charcoal-soft: #29201c;
+  --brown: #5c4638;
+
+  --white: #ffffff;
+  --black: #080706;
+
+  /* Semantic colors */
+  --background: var(--ivory);
+  --foreground: var(--charcoal);
+  --surface: #ffffff;
+  --surface-soft: var(--ivory-soft);
+  --border: rgba(24, 18, 15, 0.1);
+  --border-strong: rgba(24, 18, 15, 0.16);
+
+  /* Typography */
+  --font-display:
+    "Cormorant Garamond",
+    "Iowan Old Style",
+    "Baskerville",
+    "Times New Roman",
+    serif;
+
+  --font-body:
+    "Inter",
+    "Manrope",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  --font-devanagari:
+    "Noto Serif Devanagari",
+    "Noto Sans Devanagari",
+    "Mangal",
+    serif;
+
+  /* Layout */
+  --container-width: 1440px;
+  --content-width: 1180px;
+  --reading-width: 760px;
+
+  --nav-height: 78px;
+  --mobile-bar-height: 74px;
+
+  /* Radius */
+  --radius-sm: 0.65rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+
+  /* Shadows */
+  --shadow-soft:
+    0 10px 40px rgba(55, 27, 15, 0.06);
+
+  --shadow-card:
+    0 18px 60px rgba(55, 27, 15, 0.08);
+
+  --shadow-deep:
+    0 30px 90px rgba(55, 27, 15, 0.15);
+
+  /* Motion */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Safe areas */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+/* =========================================================
+   BASE RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  background: var(--ivory);
+}
+
+html[data-scroll-behavior="smooth"] {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  margin: 0;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(198, 154, 66, 0.055),
+      transparent 34%
+    ),
+    var(--ivory);
+
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 0.98;
+
+  letter-spacing: -0.025em;
+
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(3.25rem, 7vw, 7.5rem);
+}
+
+h2 {
+  font-size: clamp(2.5rem, 5vw, 5rem);
+}
+
+h3 {
+  font-size: clamp(1.8rem, 3vw, 3rem);
+}
+
+h4 {
+  font-size: clamp(1.4rem, 2vw, 2rem);
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.font-serif {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-devanagari {
+  font-family: var(--font-devanagari);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  border: 0;
+}
+
+
+/* =========================================================
+   MEDIA
+   ========================================================= */
+
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+video {
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   SELECTION
+   ========================================================= */
+
+::selection {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+::-moz-selection {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+
+/* =========================================================
+   LAYOUT UTILITIES
+   ========================================================= */
+
+.container-premium {
+  width: min(
+    calc(100% - 48px),
+    var(--container-width)
+  );
+
+  margin-inline: auto;
+}
+
+.container-content {
+  width: min(
+    calc(100% - 48px),
+    var(--content-width)
+  );
+
+  margin-inline: auto;
+}
+
+.reading-width {
+  width: min(
+    calc(100% - 48px),
+    var(--reading-width)
+  );
+
+  margin-inline: auto;
+}
+
+
+/* =========================================================
+   SECTION SYSTEM
+   ========================================================= */
+
+.section {
+  position: relative;
+  padding-block: clamp(5rem, 9vw, 9rem);
+}
+
+.section-tight {
+  position: relative;
+  padding-block: clamp(3.5rem, 6vw, 6rem);
+}
+
+.section-dark {
+  background: var(--charcoal);
+  color: var(--ivory);
+}
+
+.section-maroon {
+  background: var(--maroon);
+  color: var(--ivory);
+}
+
+.section-cream {
+  background: var(--cream);
+}
+
+.section-ivory {
+  background: var(--ivory);
+}
+
+
+/* =========================================================
+   EYEBROW / EDITORIAL LABEL
+   ========================================================= */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  color: var(--maroon);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+
+  width: 26px;
+  height: 1px;
+
+  background: currentColor;
+
+  opacity: 0.7;
+}
+
+.eyebrow-gold {
+  color: var(--gold);
+}
+
+.eyebrow-light {
+  color: var(--cream);
+}
+
+
+/* =========================================================
+   GOLD DIVIDERS
+   ========================================================= */
+
+.gold-line {
+  width: 100%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(198, 154, 66, 0.8),
+      transparent
+    );
+}
+
+.gold-line-left {
+  width: 100%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold),
+      rgba(198, 154, 66, 0.08)
+    );
+}
+
+
+/* =========================================================
+   PREMIUM BUTTONS
+   ========================================================= */
+
+.btn-primary {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+
+  min-height: 52px;
+  padding: 0.9rem 1.45rem;
+
+  background: var(--maroon);
+  color: var(--white);
+
+  border: 1px solid var(--maroon);
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    transform 350ms var(--ease-premium),
+    background 250ms ease,
+    border-color 250ms ease,
+    box-shadow 350ms ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+
+  background: var(--maroon-dark);
+
+  box-shadow:
+    0 14px 32px rgba(122, 23, 23, 0.2);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+
+  min-height: 52px;
+  padding: 0.9rem 1.45rem;
+
+  background: transparent;
+  color: var(--charcoal);
+
+  border: 1px solid rgba(24, 18, 15, 0.18);
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    transform 350ms var(--ease-premium),
+    background 250ms ease,
+    border-color 250ms ease,
+    color 250ms ease;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+
+  background: var(--charcoal);
+  color: var(--white);
+
+  border-color: var(--charcoal);
+}
+
+.btn-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+
+  min-height: 52px;
+  padding: 0.9rem 1.45rem;
+
+  background: var(--ivory);
+  color: var(--charcoal);
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    transform 350ms var(--ease-premium),
+    box-shadow 300ms ease;
+}
+
+.btn-light:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   PREMIUM CARD
+   ========================================================= */
+
+.premium-card {
+  position: relative;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-soft);
+
+  overflow: hidden;
+
+  transition:
+    transform 500ms var(--ease-premium),
+    box-shadow 500ms var(--ease-premium),
+    border-color 300ms ease;
+}
+
+.premium-card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(198, 154, 66, 0.28);
+
+  box-shadow: var(--shadow-card);
+}
+
+
+/* =========================================================
+   IMAGE TREATMENT
+   ========================================================= */
+
+.image-luxury {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-luxury img,
+.image-luxury video {
+  transition:
+    transform 900ms var(--ease-premium),
+    filter 700ms ease;
+}
+
+.image-luxury:hover img,
+.image-luxury:hover video {
+  transform: scale(1.035);
+}
+
+
+/* =========================================================
+   CINEMATIC OVERLAYS
+   ========================================================= */
+
+.overlay-dark {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 7, 6, 0.08) 0%,
+      rgba(8, 7, 6, 0.2) 45%,
+      rgba(8, 7, 6, 0.78) 100%
+    );
+}
+
+.overlay-maroon {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(59, 11, 11, 0.8),
+      rgba(122, 23, 23, 0.22),
+      rgba(8, 7, 6, 0.72)
+    );
+}
+
+.overlay-light {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 249, 239, 0),
+      rgba(255, 249, 239, 0.9)
+    );
+}
+
+
+/* =========================================================
+   GRAIN / FILM TEXTURE
+   ========================================================= */
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.075;
+
+  background-image: url("/noise.svg");
+
+  mix-blend-mode: soft-light;
+
+  z-index: 20;
+}
+
+
+/* =========================================================
+   SPIRITUAL DECORATION
+   ========================================================= */
+
+.om-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+
+  border: 1px solid
+    rgba(198, 154, 66, 0.45);
+
+  border-radius: 50%;
+
+  color: var(--gold);
+
+  font-family: var(--font-devanagari);
+  font-size: 1.5rem;
+
+  line-height: 1;
+}
+
+.om-mark-large {
+  width: 84px;
+  height: 84px;
+
+  font-size: 2.5rem;
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.input-field {
+  width: 100%;
+
+  min-height: 54px;
+
+  border: 1px solid
+    rgba(24, 18, 15, 0.12);
+
+  background: rgba(255, 255, 255, 0.86);
+
+  border-radius: var(--radius-md);
+
+  padding: 0.95rem 1rem;
+
+  color: var(--charcoal);
+
+  outline: none;
+
+  font-size: 0.95rem;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.input-field:hover {
+  border-color:
+    rgba(24, 18, 15, 0.2);
+}
+
+.input-field::placeholder {
+  color: rgba(24, 18, 15, 0.4);
+}
+
+.input-field:focus {
+  border-color: var(--gold);
+
+  background: var(--white);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(198, 154, 66, 0.12);
+}
+
+textarea.input-field {
+  min-height: 140px;
+  resize: vertical;
+}
+
+select.input-field {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--charcoal);
+}
+
+::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      var(--gold-light),
+      var(--gold-dark)
+    );
+
+  border-radius: 999px;
+
+  border: 2px solid var(--charcoal);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+
+/* =========================================================
+   MOBILE BOTTOM SAFE AREA
+   ========================================================= */
+
+.mobile-bottom-safe {
+  padding-bottom:
+    calc(
+      var(--mobile-bar-height) +
+      var(--safe-bottom)
+    );
+}
+
+
+/* =========================================================
+   HORIZONTAL RULE
+   ========================================================= */
+
+.editorial-rule {
+  width: 100%;
+  height: 1px;
+
+  background: var(--border);
+}
+
+
+/* =========================================================
+   SUBTLE HOVER UNDERLINE
+   ========================================================= */
+
+.editorial-link {
+  position: relative;
+
+  display: inline-block;
+}
+
+.editorial-link::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -5px;
+
+  width: 100%;
+  height: 1px;
+
+  background: currentColor;
+
+  transform: scaleX(0);
+  transform-origin: right;
+
+  transition:
+    transform 500ms var(--ease-premium);
+}
+
+.editorial-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+
+/* =========================================================
+   PAGE TRANSITION SUPPORT
+   ========================================================= */
+
+.page-shell {
+  position: relative;
+
+  min-height: 100vh;
+
+  isolation: isolate;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.sr-only {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+
+  border: 0;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  .container-premium,
+  .container-content,
+  .reading-width {
+    width: min(
+      calc(100% - 32px),
+      var(--container-width)
+    );
+  }
+
+  .section {
+    padding-block: 4.5rem;
+  }
+
+  .section-tight {
+    padding-block: 3.25rem;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-light {
+    min-height: 50px;
+
+    padding-inline: 1.2rem;
+
+    font-size: 0.72rem;
+  }
+
+  .premium-card {
+    border-radius: var(--radius-md);
+  }
+}
+
+
+/* =========================================================
+   SMALL DEVICES
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .container-premium,
+  .container-content,
+  .reading-width {
+    width: calc(100% - 28px);
+  }
+
+  .section {
+    padding-block: 3.75rem;
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 14vw, 4.2rem);
+  }
+
+  h2 {
+    font-size: clamp(2.25rem, 11vw, 3.5rem);
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
